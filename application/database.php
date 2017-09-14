@@ -15,7 +15,7 @@ return [
     // 服务器地址
     'hostname'        => 'localhost',
     // 数据库名
-    'database'        => 'sdp_mobile',
+    'database'        => 'sdp_mobile_',
     // 用户名
     'username'        => 'root',
     // 密码
