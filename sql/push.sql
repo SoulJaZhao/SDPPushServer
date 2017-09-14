@@ -1,0 +1,11 @@
+#创建数据库
+CREATE DATABASE sdp_mobile;
+#使用数据库
+USE sdp_mobile;
+#创建用户表
+CREATE TABLE sdp_mobile_user (
+id UNSIGNED INT AUTO_INCREMENT COMMENT '用户主键',
+account VARCHAR(30) NOT NULL DEFAULT '' COMMENT '账号' UNIQUE,
+password VARCHAR(30) NOT NULL DEFAULT '' COMMENT '密码',
+createtime INT NOT NULL DEFAULT 0 COMMENT '创建时间'
+)ENGINE MYISAM DEFAULT CHARSET=UTF8;
