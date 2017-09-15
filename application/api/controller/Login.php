@@ -9,7 +9,12 @@ class Login extends Base
 {
 	//登录方法
 	public function index() {
-		echo 'Login()';
+		$result = [
+			"errorCode"		=>		0,
+			"errorMsg"		=>		"",
+			"data"			=>		"hahah"
+		];
+		echo json_encode($result);
 	}
 }
 ?>
