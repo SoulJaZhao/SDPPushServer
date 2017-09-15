@@ -51,5 +51,18 @@ class Base extends Controller
 			}
 		}
 	}
+
+	// 创建随机字符串
+	protected function createRandomString($length) {
+        // 密码字符集，可任意添加你需要的字符
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $string ='';
+        for ( $i = 0; $i < $length; $i++ )
+        {
+
+            $string .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+        }
+        return $string;
+    }
 }
 ?>
