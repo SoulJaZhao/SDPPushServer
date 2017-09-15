@@ -9,7 +9,7 @@ use app\api\model\User;
 class Register extends Base 
 {
 	// 注册方法
-	public function index() {
+    public function index() {
 		// 请求信息
 		$request = request();
 		
@@ -21,9 +21,9 @@ class Register extends Base
 		];
 
 		// POST过滤
-//		if (!$this->filterPostRequest($request, $rules)) {
-//			return;
-//		}
+		if (!$this->filterPostRequest($request, $rules)) {
+			return;
+		}
 		// 账号
 		$account = trim($request->param('account'));
 		// 密码
