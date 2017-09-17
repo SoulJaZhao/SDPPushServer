@@ -4,6 +4,7 @@ namespace app\api\controller;
 
 use think\Controller;
 use think\Validate;
+use think\Session;
 
 class Base extends Controller 
 {
@@ -51,6 +52,78 @@ class Base extends Controller
 			}
 		}
 	}
+
+    /* 过滤在线状态请求
+     * @param request 请求对象
+     * @param rules 过滤规则
+     */
+    protected function filterOnlineStatusRequest($request, $rules) {
+        //请求方法
+        $method = $request->method();
+
+        // 判断是否缺少AccessToken参数
+        $accessToken = trim($request->param('accessToken'));
+
+        if (is_null($accessToken)) {
+            echo $this->createErrorResponse('101','缺少参数');
+            return false;
+        } else {
+            // 判断会话是否超时
+            if ($accessToken != Session::get('accessToken')) {
+                echo $this->createErrorResponse('102','登陆超时');
+                return false;
+            }
+        }
+
+        //POST请求方式
+        if (strtolower($method) == 'post') {
+            if ($this->filterPostRequest($request, $rules)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // GET请求方法
+        elseif (strtolower($method) == 'get') {
+            if ($this->filterGetRequest($request, $rules)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 其他
+        else {
+            echo $this->createErrorResponse('100','请求方式错误');
+            return false;
+        }
+    }
+
+    /* 过滤GET请求
+     * @param request 请求对象
+     * @param rules 过滤规则
+     */
+    protected function filterGetRequest($request, $rules) {
+        //请求方法
+        $method = $request->method();
+        //请求方式错误
+        if (strtolower($method) != 'get') {
+            echo $this->createErrorResponse('100','请求方式错误');
+            return false;
+        } else {
+            //过滤参数
+            $validate = new Validate($rules);
+
+            $result = $validate->check($request->param());
+            if (!$result) {
+                echo $this->createErrorResponse('101','缺少参数');
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 
 	// 创建随机字符串
 	protected function createRandomString($length) {
