@@ -15,7 +15,20 @@ use app\api\model\User;
 class App extends Base
 {
     public function index() {
+        // 请求信息
+        $request = request();
 
+        // 验证规则
+        $rules = [
+            'accessToken'   =>      'require'
+        ];
+        // POST过滤
+        if (!$this->filterOnlineStatusRequest($request, $rules)) {
+            return;
+        }
+        $list = collection(Application::all())->hidden(['user_id']);
+        echo $this->createSuccessResponse(['appList' => $list]);
+        return;
     }
 
     // 添加应用
@@ -26,10 +39,10 @@ class App extends Base
         // 验证规则
         $rules = [
             'appname'		=>		'require',
-            'accessKeyId'		=>		'require',
-            'accessKeySecret'   =>      'require',
-            'appKey'        =>      'require',
-            'userId'        =>      'require',
+            'access_key_id'		=>		'require',
+            'access_key_secret'   =>      'require',
+            'appkey'        =>      'require',
+            'user_id'        =>      'require',
             'accessToken'   =>      'require'
         ];
         // POST过滤
@@ -40,13 +53,13 @@ class App extends Base
         // 应用名称
         $appname = trim($request->param('appname'));
         // 应用校验ID
-        $accessKeyId = trim($request->param('accessKeyId'));
+        $access_key_id = trim($request->param('access_key_id'));
         // 应用校验secret
-        $accessKeySecret = trim($request->param('accessSecret'));
+        $access_key_secret = trim($request->param('access_key_secret'));
         // 应用的Key
-        $appKey = trim($request->param('appKey'));
+        $appkey = trim($request->param('appkey'));
         // 用户ID
-        $userId = trim($request->param('userId'));
+        $user_id = trim($request->param('user_id'));
         // 会话
         $accessToken = trim($request->param('accessToken'));
 
@@ -59,7 +72,7 @@ class App extends Base
         }
 
         // 是否存在该用户
-        $user = User::get(['id' => $userId]);
+        $user = User::get(['id' => $user_id]);
 
         if (is_null($user)) {
             echo $this->createErrorResponse(401,'不存在的用户');
@@ -68,10 +81,10 @@ class App extends Base
         //写入数据库
         $data = [
             'appname'       =>      $appname,
-            'access_key_id'      =>      $accessKeyId,
-            'access_key_secret'    =>      $accessKeySecret,
-            'appkey'        =>      $appKey,
-            'user_id'        =>     $userId,
+            'access_key_id'      =>      $access_key_id,
+            'access_key_secret'    =>      $access_key_secret,
+            'appkey'        =>      $appkey,
+            'user_id'        =>     $user_id,
             'createtime'    =>      time()
         ];
         $app = new Application($data);
