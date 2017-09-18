@@ -11,6 +11,7 @@ use think\Controller;
 use app\api\controller\Base;
 use app\api\model\Application;
 use app\api\model\User;
+use think\Db;
 
 class App extends Base
 {
@@ -87,10 +88,10 @@ class App extends Base
             'user_id'        =>     $user_id,
             'createtime'    =>      time()
         ];
-        $app = new Application($data);
-        $app->save();
+        Db::name('application')->insert($data);
+
         // 写入数据库失败
-        if (!$app->id) {
+        if (!Db::name('application')->getLastInsID()) {
             echo $this->createErrorResponse(4002, '添加应用失败');
             return;
         } else {
