@@ -26,7 +26,7 @@ class App extends Base
         if (!$this->filterOnlineStatusRequest($request, $rules)) {
             return;
         }
-        $list = collection(Application::all())->hidden(['user_id']);
+        $list = collection(Application::all())->hidden(['password','userCreatetime']);
         echo $this->createSuccessResponse(['appList' => $list]);
         return;
     }
@@ -67,7 +67,7 @@ class App extends Base
         $app = Application::get(['appname'=>$appname]);
 
         if (!is_null($app)) {
-            echo $this->createErrorResponse(400, '已经存在该应用名称');
+            echo $this->createErrorResponse(4000, '已经存在该应用');
             return;
         }
 
@@ -75,7 +75,7 @@ class App extends Base
         $user = User::get(['id' => $user_id]);
 
         if (is_null($user)) {
-            echo $this->createErrorResponse(401,'不存在的用户');
+            echo $this->createErrorResponse(4001,'不存在的用户');
             return;
         }
         //写入数据库
@@ -91,7 +91,7 @@ class App extends Base
         $app->save();
         // 写入数据库失败
         if (!$app->id) {
-            echo $this->createErrorResponse(402, '添加应用失败');
+            echo $this->createErrorResponse(4002, '添加应用失败');
             return;
         } else {
             // 注册成功

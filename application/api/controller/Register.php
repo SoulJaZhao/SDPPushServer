@@ -33,14 +33,14 @@ class Register extends Base
 
 		//判断密码是否一致
 		if ($password != $rePassword) {
-			echo $this->createErrorResponse(200, '请输入一致的密码');
+			echo $this->createErrorResponse(2000, '请输入一致的密码');
 			return;
 		}
 		// 判断是否存在该用户
         $user = User::get(['account'=>$account]);
 		// 存在该用户
         if ($user != null) {
-            echo $this->createErrorResponse(201,'账号已存在');
+            echo $this->createErrorResponse(2001,'账号已存在');
             return;
         }
         //写入数据库
@@ -52,7 +52,7 @@ class Register extends Base
         $user->save();
         // 写入数据库失败
         if (!$user->id) {
-            echo $this->createErrorResponse(202, '账号注册失败');
+            echo $this->createErrorResponse(2002, '账号注册失败');
             return;
         } else {
             // 注册成功

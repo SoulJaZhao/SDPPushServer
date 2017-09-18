@@ -37,7 +37,7 @@ class Base extends Controller
 		$method = $request->method();
 		//请求方式错误
 		if (strtolower($method) != 'post') {
-			echo $this->createErrorResponse('100','请求方式错误');
+			echo $this->createErrorResponse('1000','请求方式错误');
 			return false;
 		} else {
 			//过滤参数
@@ -45,7 +45,7 @@ class Base extends Controller
 
 			$result = $validate->check($request->param());
 			if (!$result) {
-				echo $this->createErrorResponse('101','缺少参数');
+				echo $this->createErrorResponse('1001','缺少参数');
 				return false;
 			} else {
 				return true;
@@ -65,12 +65,12 @@ class Base extends Controller
         $accessToken = trim($request->param('accessToken'));
 
         if (is_null($accessToken)) {
-            echo $this->createErrorResponse('101','缺少参数');
+            echo $this->createErrorResponse('1001','缺少参数');
             return false;
         } else {
             // 判断会话是否超时
             if ($accessToken != Session::get('accessToken')) {
-                echo $this->createErrorResponse('102','登陆超时');
+                echo $this->createErrorResponse('1002','登陆超时');
                 return false;
             }
         }
@@ -95,7 +95,7 @@ class Base extends Controller
         }
         // 其他
         else {
-            echo $this->createErrorResponse('100','请求方式错误');
+            echo $this->createErrorResponse('1000','请求方式错误');
             return false;
         }
     }
@@ -109,7 +109,7 @@ class Base extends Controller
         $method = $request->method();
         //请求方式错误
         if (strtolower($method) != 'get') {
-            echo $this->createErrorResponse('100','请求方式错误');
+            echo $this->createErrorResponse('1000','请求方式错误');
             return false;
         } else {
             //过滤参数
@@ -117,7 +117,7 @@ class Base extends Controller
 
             $result = $validate->check($request->param());
             if (!$result) {
-                echo $this->createErrorResponse('101','缺少参数');
+                echo $this->createErrorResponse('1001','缺少参数');
                 return false;
             } else {
                 return true;

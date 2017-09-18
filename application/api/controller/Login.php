@@ -40,7 +40,7 @@ class Login extends Base
         ]);
 
         if (is_null($user)) {
-            echo $this->createErrorResponse(300, '账号或密码错误');
+            echo $this->createErrorResponse(3000, '账号或密码错误');
             return;
         }
 
@@ -56,7 +56,7 @@ class Login extends Base
         $loginLog->save();
 
         if (!$loginLog->id) {
-            echo $this->createErrorResponse(301, "写入登录日志失败");
+            echo $this->createErrorResponse(3001, "写入登录日志失败");
             return;
         }
 
