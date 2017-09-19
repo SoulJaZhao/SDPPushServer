@@ -8,10 +8,11 @@
 namespace app\api\controller;
 
 use think\Controller;
+use think\Db;
 use app\api\controller\Base;
 use app\api\model\Application;
 use app\api\model\User;
-use think\Db;
+
 
 class App extends Base
 {
@@ -27,7 +28,7 @@ class App extends Base
         if (!$this->filterOnlineStatusRequest($request, $rules)) {
             return;
         }
-        $list = collection(Application::all())->hidden(['password','userCreatetime']);
+        $list = Db::table('sdp_mobile_application')->alias('application')->join('sdp_mobile_user user','application.user_id = user.id')->field(['application.id','appname','access_key_id','access_key_secret','appkey','user_id','application.createtime','user.account'])->select();
         echo $this->createSuccessResponse(['appList' => $list]);
         return;
     }
@@ -88,10 +89,10 @@ class App extends Base
             'user_id'        =>     $user_id,
             'createtime'    =>      time()
         ];
-        Db::name('application')->insert($data);
+        $app = new Application($data);
 
         // 写入数据库失败
-        if (!Db::name('application')->getLastInsID()) {
+        if (!$app->id) {
             echo $this->createErrorResponse(4002, '添加应用失败');
             return;
         } else {
