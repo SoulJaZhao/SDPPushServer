@@ -28,3 +28,5 @@ CREATE TABLE IF NOT EXISTS  sdp_mobile_application (
   createtime INT NOT NULL DEFAULT 0 COMMENT '创建时间'
 )
 ENGINE MYISAM DEFAULT CHARSET=UTF8;
+#创建应用用户视图
+CREATE VIEW sdp_mobile_application_user_view as select application.id,application.appname,application.access_key_id,application.access_key_secret,application.appkey,application.user_id,application.createtime from sdp_mobile_application as application left JOIN sdp_mobile_user as user on application.user_id=user.id ORDER BY application.id;

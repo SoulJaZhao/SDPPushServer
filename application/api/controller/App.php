@@ -12,6 +12,7 @@ use think\Db;
 use app\api\controller\Base;
 use app\api\model\Application;
 use app\api\model\User;
+use app\api\model\Application_user_view;
 
 
 class App extends Base
@@ -28,7 +29,8 @@ class App extends Base
         if (!$this->filterOnlineStatusRequest($request, $rules)) {
             return;
         }
-        $list = Db::table('sdp_mobile_application')->alias('application')->join('sdp_mobile_user user','application.user_id = user.id')->field(['application.id','appname','access_key_id','access_key_secret','appkey','user_id','application.createtime','user.account'])->select();
+        $list =collection(Application_user_view::all());
+//        $list = Db::table('sdp_mobile_application')->alias('application')->join('sdp_mobile_user user','application.user_id = user.id')->field(['application.id','appname','access_key_id','access_key_secret','appkey','user_id','application.createtime','user.account'])->select();
         echo $this->createSuccessResponse(['appList' => $list]);
         return;
     }
