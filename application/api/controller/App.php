@@ -90,7 +90,7 @@ class App extends Base
             'createtime'    =>      time()
         ];
         $app = new Application($data);
-
+        $app->save();
         // 写入数据库失败
         if (!$app->id) {
             echo $this->createErrorResponse(4002, '添加应用失败');
