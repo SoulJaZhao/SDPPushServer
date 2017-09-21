@@ -137,5 +137,14 @@ class Base extends Controller
         }
         return $string;
     }
+
+    // 枚举输入值得判断
+    protected  function isInEnum($item,$enum) {
+        if (in_array($item,$enum)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>
