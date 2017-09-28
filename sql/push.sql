@@ -30,3 +30,19 @@ CREATE TABLE IF NOT EXISTS  sdp_mobile_application (
 ENGINE MYISAM DEFAULT CHARSET=UTF8;
 #创建应用用户视图
 CREATE VIEW sdp_mobile_application_user_view as select application.id,application.appname,application.access_key_id,application.access_key_secret,application.appkey,application.user_id,application.createtime,user.account from sdp_mobile_application as application left JOIN sdp_mobile_user as user on application.user_id=user.id ORDER BY application.id;
+#创建推送记录表
+CREATE TABLE  IF NOT EXISTS sdp_mobile_push_record (
+  id INT AUTO_INCREMENT PRIMARY KEY COMMENT '推送记录主键',
+  app_id INT NOT NULL DEFAULT 0 COMMENT '应用ID',
+  user_id INT NOT NULL DEFAULT 0 COMMENT '用户ID',
+  target VARCHAR(30) NOT NULL DEFAULT '' COMMENT '推送目标',
+  target_value VARCHAR(50) not NULL DEFAULT '' COMMENT '推送数据值',
+  devicetype VARCHAR(20) NOT NULL DEFAULT '' COMMENT '推送设备类型',
+  pushtype VARCHAR(20) NOT NULL DEFAULT '' COMMENT '推送类型',
+  title VARCHAR(30) NOT NULL DEFAULT '' COMMENT '推送标题',
+  body VARCHAR(50) NOT NULL DEFAULT '' COMMENT '推送具体信息',
+  badge INT NOT NULL DEFAULT 0 COMMENT '推送的角标',
+  silent VARCHAR(20) NOT NULL DEFAULT '' COMMENT '是否开启静默通知',
+  apns VARCHAR(20) NOT NULL DEFAULT '' COMMENT '推送环境'
+)
+ENGINE MYISAM DEFAULT CHARSET=UTF8;

@@ -15,6 +15,7 @@ use think\Loader;
 
 use app\api\model\User;
 use app\api\model\Application;
+use app\api\model\Push_record;
 
 class Push extends Base {
     /**
@@ -137,10 +138,32 @@ class Push extends Base {
         $response = $client->getAcsResponse($pushRequest);
 
         if ($response->MessageId) {
+
+            $record = new Push_record([
+                "app_id"        =>      $appId,
+                "user_id"       =>      $userId,
+                "target"        =>      $target,
+                "target_value"  =>      $targetValue,
+                "devicetype"    =>      $deviceType,
+                "pushtype"      =>      $pushType,
+                "title"         =>      $title,
+                "body"          =>      $body,
+                "badge"         =>      $badge,
+                "silent"        =>      $silent,
+                "apns"          =>      $apns
+            ]);
+
+            $record->save();
+
+            if (!$record->id) {
+                echo $this->createErrorResponse(5005,'推送数据保存失败');
+                return;
+            }
+
             echo $this->createSuccessResponse($response);
             return;
         } else {
-            echo $this->createErrorResponse(5005,'推送失败');
+            echo $this->createErrorResponse(5006,'推送失败');
             return;
         }
     }
