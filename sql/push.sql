@@ -43,6 +43,10 @@ CREATE TABLE  IF NOT EXISTS sdp_mobile_push_record (
   body VARCHAR(50) NOT NULL DEFAULT '' COMMENT '推送具体信息',
   badge INT NOT NULL DEFAULT 0 COMMENT '推送的角标',
   silent VARCHAR(20) NOT NULL DEFAULT '' COMMENT '是否开启静默通知',
-  apns VARCHAR(20) NOT NULL DEFAULT '' COMMENT '推送环境'
+  apns VARCHAR(20) NOT NULL DEFAULT '' COMMENT '推送环境',
+  pushtime INT NOT NULL DEFAULT 0 COMMENT '推送时间'
 )
 ENGINE MYISAM DEFAULT CHARSET=UTF8;
+
+#创建查询视图
+CREATE VIEW sdp_mobile_push_view as SELECT push.id,push.target,push.target_value,push.devicetype,push.pushtype,push.title,push.body,push.badge,push.silent,push.apns,push.pushtime,application.appname FROM sdp_mobile_push_record as push LEFT JOIN sdp_mobile_application as application ON push.app_id=application.id ORDER BY push.id DESC;

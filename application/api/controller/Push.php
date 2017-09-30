@@ -8,6 +8,7 @@
 // 推送通知
 namespace app\api\controller;
 
+use app\api\model\Push_view;
 use think\Controller;
 use think\Request;
 use think\Session;
@@ -150,7 +151,8 @@ class Push extends Base {
                 "body"          =>      $body,
                 "badge"         =>      $badge,
                 "silent"        =>      $silent,
-                "apns"          =>      $apns
+                "apns"          =>      $apns,
+                "pushtime"      =>      time()
             ]);
 
             $record->save();
@@ -166,5 +168,25 @@ class Push extends Base {
             echo $this->createErrorResponse(5006,'推送失败');
             return;
         }
+    }
+
+    /*
+     *  查询推送记录
+     */
+    public function getRecords() {
+        // 请求信息
+        $request = request();
+
+        // 验证规则
+        $rules = [
+            'accessToken'   =>      'require'
+        ];
+        // POST过滤
+        if (!$this->filterOnlineStatusRequest($request, $rules)) {
+            return;
+        }
+
+        echo $this->createSuccessResponse(array("pushList"=>Push_view::all()));
+        return;
     }
 }
